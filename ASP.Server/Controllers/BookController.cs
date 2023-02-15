@@ -64,5 +64,16 @@ namespace ASP.Server.Controllers
             List<Genre> allGenres = libraryDbContext.Genres.ToList();
             return View(new CreateBookModel { AllGenres = allGenres });
         }
+
+        public ActionResult DeleteBook(int id)
+        {
+            var book = libraryDbContext.Books.Find(id);
+            if (book != null)
+            {
+                libraryDbContext.Books.Remove(book);
+                libraryDbContext.SaveChanges();
+            }
+            return RedirectToAction(nameof(List));
+        }
     }
 }

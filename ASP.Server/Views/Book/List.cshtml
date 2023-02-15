@@ -15,10 +15,11 @@
                 <p>Price: @book.Prix</p>
                 <p>Content: @book.Contenu</p>
                 <p>Genres: @string.Join(", ", book.Genres.Select(g => g.GenreLitteraire))</p>
-                
+                <form asp-action="DeleteBook" asp-controller="Book">
+                    <input type="hidden" name="id" value="@book.Id" />
+                    <button type="submit">Supprimer</button>
+                </form>
             </li>
         }
     </ul>
 </div>
-
-

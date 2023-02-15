@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Linq;
 
 namespace ASP.Server.Model
 {
@@ -10,7 +10,7 @@ namespace ASP.Server.Model
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Nom { get; set; }
         public string Autheur { get; set; }
         public int Prix { get; set; }
@@ -26,6 +26,20 @@ namespace ASP.Server.Model
         public void SupprimerGenre(Genre genre)
         {
             Genres.Remove(genre);
+        }
+
+        public void AfficherLivre(Book SelectBook)
+        {
+
+            Console.WriteLine("ID : {0}", SelectBook.Id);
+            Console.WriteLine("Nom : {0}", SelectBook.Nom);
+            Console.WriteLine("Auteur : {0}", SelectBook.Autheur);
+            Console.WriteLine("Prix : {0}", SelectBook.Prix);
+            Console.WriteLine("Contenu : {0}", SelectBook.Contenu);
+            Console.WriteLine("Genres : {0}", string.Join(",", SelectBook.Genres.Select(g => g.GenreLitteraire)));
+            Console.WriteLine("----------------------------");
+
+
         }
 
 

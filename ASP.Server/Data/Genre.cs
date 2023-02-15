@@ -10,7 +10,7 @@ namespace ASP.Server.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string GenreLitteraire { get; set; }
         public List<Book> Books { get; set; }
@@ -24,6 +24,28 @@ namespace ASP.Server.Model
         public void SupprimerLivre(Book livre)
         {
             Books.Remove(livre);
+        }
+        public void AfficherGenre(Genre genre)
+        {
+            Console.WriteLine("ID : {0}", genre.Id);
+            Console.WriteLine("Genre littéraire : {0}", genre.GenreLitteraire);
+
+            if (genre.Books != null)
+            {
+                Console.WriteLine("Liste des livres :");
+                foreach (var livre in genre.Books)
+                {
+                    Console.WriteLine("\tNom : {0}", livre.Nom);
+                    Console.WriteLine("\tAuteur : {0}", livre.Autheur);
+                    Console.WriteLine("\tPrix : {0}", livre.Prix);
+                    Console.WriteLine("\tContenu : {0}", livre.Contenu);
+                    Console.WriteLine("\t-----------------------");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Aucun livre trouvé pour ce genre.");
+            }
         }
 
 

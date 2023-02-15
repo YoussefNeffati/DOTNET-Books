@@ -10,9 +10,9 @@ namespace ASP.Server.Model
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Nom { get; set; }
-        public string Autheur { get; set; }
+        public string Auteur { get; set; }
         public int Prix { get; set; }
         public string Contenu { get; set; }
         public List<Genre> Genres { get; set;  }
@@ -33,7 +33,7 @@ namespace ASP.Server.Model
 
             Console.WriteLine("ID : {0}", SelectBook.Id);
             Console.WriteLine("Nom : {0}", SelectBook.Nom);
-            Console.WriteLine("Auteur : {0}", SelectBook.Autheur);
+            Console.WriteLine("Auteur : {0}", SelectBook.Auteur);
             Console.WriteLine("Prix : {0}", SelectBook.Prix);
             Console.WriteLine("Contenu : {0}", SelectBook.Contenu);
             Console.WriteLine("Genres : {0}", string.Join(",", SelectBook.Genres.Select(g => g.GenreLitteraire)));

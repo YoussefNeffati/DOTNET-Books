@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace ASP.Server.Model
 {
@@ -10,9 +11,10 @@ namespace ASP.Server.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string GenreLitteraire { get; set; }
+        [JsonIgnore]
         public List<Book> Books { get; set; }
 
 
@@ -36,7 +38,7 @@ namespace ASP.Server.Model
                 foreach (var livre in genre.Books)
                 {
                     Console.WriteLine("\tNom : {0}", livre.Nom);
-                    Console.WriteLine("\tAuteur : {0}", livre.Autheur);
+                    Console.WriteLine("\tAuteur : {0}", livre.Auteur);
                     Console.WriteLine("\tPrix : {0}", livre.Prix);
                     Console.WriteLine("\tContenu : {0}", livre.Contenu);
                     Console.WriteLine("\t-----------------------");

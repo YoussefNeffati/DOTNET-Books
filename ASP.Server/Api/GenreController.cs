@@ -13,11 +13,11 @@ namespace ASP.Server.Api
 
     [Route("/api/[controller]/[action]")]
     [ApiController]
-    public class BookController : ControllerBase
+    public class GenreController : ControllerBase
     {
         private readonly LibraryDbContext libraryDbContext;
 
-        public BookController(LibraryDbContext libraryDbContext)
+        public GenreController(LibraryDbContext libraryDbContext)
         {
             this.libraryDbContext = libraryDbContext;
         }
@@ -53,68 +53,17 @@ namespace ASP.Server.Api
         //
         // Exemple:
         //   - Ex: libraryDbContext.MyObjectCollection.Include(x => x.yyyyy).Where(x => x.yyyyyy.Contains(z)).Skip(i).Take(j).ToList()
+   
 
-
-        // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
-        public ActionResult<List<Book>> GetBooks(int offset = 0, int limit = 10, int? genre = null)
+        public ActionResult<List<Genre>> GetGenres()
         {
-            var booksQuery = libraryDbContext.Books
-                .OrderBy(b => b.Id)
-                .Skip(offset)
-                .Take(limit)
-                .Include(b => b.Genres)
-                .Where(b => !genre.HasValue || b.Genres.Any(g => g.Id == genre.Value));
-
-            var books = booksQuery.ToList();
-
-            var count = libraryDbContext.Books.Count();
-            var range = $"{offset + 1}-{offset + books.Count}/{count}";
-
-            Response.Headers.Add("Pagination", range);
-
-            var booksWithGenres = books.Select(b => new Book
-            {
-                Id = b.Id,
-                Nom = b.Nom,
-                Auteur = b.Auteur,
-                Prix = b.Prix,
-                Contenu = b.Contenu,
-                Genres = b.Genres.Select(g => new Genre { Id = g.Id, GenreLitteraire = g.GenreLitteraire }).ToList()
+            var genres = libraryDbContext.Genres.Select(g => new {
+                Id = g.Id,
+                genreLitteraire = g.GenreLitteraire
             }).ToList();
 
-            return booksWithGenres;
+            return Ok(genres);
         }
-
-
-
-        [HttpGet("{id}")]
-        public ActionResult<Book> GetBook(int id)
-        {
-            // Get the book from the database
-            var book = libraryDbContext.Books
-                .Include(b => b.Genres)
-                .FirstOrDefault(b => b.Id == id);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            // Map the book to the desired response format
-            var bookResponse = new
-            {
-                Id = book.Id,
-                Nom = book.Nom,
-                Prix = book.Prix,
-                Auteur = book.Auteur,
-                Contenu = book.Contenu,
-                Genres = book.Genres.Select(g => new { Id = g.Id, Name = g.GenreLitteraire }).ToList()
-
-            };
-
-            return Ok(bookResponse);
-        }
-
     }
 }
 

@@ -18,7 +18,7 @@ namespace ASP.Server.Controllers
         // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
 
         // Liste des genres séléctionné par l'utilisateur
-        public List<Guid> Genres { get; set; }
+        public List<int> Genres { get; set; }
 
         // Liste des genres a afficher à l'utilisateur
         public IEnumerable<Genre> AllGenres { get; init;  }

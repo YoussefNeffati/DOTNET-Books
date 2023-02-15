@@ -21,19 +21,19 @@ namespace ASP.Server.Database
             bookDbContext.Genres.AddRange(
                  Autobiographie = new Genre
                  {
-                     Id = Guid.NewGuid(),
+                     Id = 1,
                      GenreLitteraire = GenresPossible.Autobiographie.ToString(),
                      Books = new List<Book>()
                  },
              SF = new Genre
              {
-                 Id = Guid.NewGuid(),
+                 Id = 2,
                  GenreLitteraire = GenresPossible.ScienceFiction.ToString(),
                  Books = new List<Book>()
              },
              Aventure = new Genre
              {
-                 Id = Guid.NewGuid(),
+                 Id = 3,
                  GenreLitteraire = GenresPossible.Aventure.ToString(),
                  Books = new List<Book>()
              }
@@ -46,27 +46,27 @@ namespace ASP.Server.Database
             bookDbContext.Books.AddRange(
                B1 = new Book
                {
-                   Id = Guid.NewGuid(),
+                   Id = 1,
                    Nom = "Le Nom du vent",
-                   Autheur = "Patrick Rothfuss",
+                   Auteur = "Patrick Rothfuss",
                    Prix = 15,
                    Contenu = "Le silence avait un poids et il m'écrasait la poitrine...",
                    Genres = new List<Genre> { SF, Aventure, Autobiographie }
                },
                B2 = new Book
                {
-                   Id = Guid.NewGuid(),
+                   Id = 2,
                    Nom = "Milky way",
-                   Autheur = "Amine mojito",
+                   Auteur = "Amine mojito",
                    Prix = 56,
                    Contenu = "Il est lent le lait",
                    Genres = new List<Genre> { Aventure, Autobiographie }
                },
                B3 = new Book
                {
-                   Id = Guid.NewGuid(),
+                   Id = 3,
                    Nom = "hAWKMAN",
-                   Autheur = "HASSEN KHALIFA",
+                   Auteur = "HASSEN KHALIFA",
                    Prix = 1500,
                    Contenu = "OOOOOHHH .... j'ai le droit de vivre un peu !",
                    Genres = new List<Genre> { Autobiographie }
@@ -90,7 +90,7 @@ namespace ASP.Server.Database
             {
                 Console.WriteLine("ID : {0}", livre.Id);
                 Console.WriteLine("Nom : {0}", livre.Nom);
-                Console.WriteLine("Auteur : {0}", livre.Autheur);
+                Console.WriteLine("Auteur : {0}", livre.Auteur);
                 Console.WriteLine("Prix : {0}", livre.Prix);
                 Console.WriteLine("Contenu : {0}", livre.Contenu);
                 Console.WriteLine("Genres : {0}", string.Join(",", livre.Genres.Select(g => g.GenreLitteraire)));
@@ -115,7 +115,7 @@ namespace ASP.Server.Database
                 {
                     Console.WriteLine("\tID : {0}", livre.Id);
                     Console.WriteLine("\tNom : {0}", livre.Nom);
-                    Console.WriteLine("\tAuteur : {0}", livre.Autheur);
+                    Console.WriteLine("\tAuteur : {0}", livre.Auteur);
                     Console.WriteLine("\tPrix : {0}", livre.Prix);
                     Console.WriteLine("\tContenu : {0}", livre.Contenu);
                     Console.WriteLine("\t----------------------------");

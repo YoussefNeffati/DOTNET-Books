@@ -18,6 +18,10 @@ namespace ASP.Server.Controllers
             this.libraryDbContext = libraryDbContext;
         }
 
-        // A vous de faire comme BookController.List mais pour les genres !
+        public ActionResult<IEnumerable<Genre>> List()
+        {
+            List<Genre> genres = libraryDbContext.Genres.Include(b => b.Books).ToList();
+            return View(genres);
+        }
     }
 }

@@ -6,9 +6,19 @@
 
 <div class="listeBooks">
     <h1>Liste des livres:</h1>
-    <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
-    @foreach (var book in Model)
-    {
-    }
+    <ul>
+        @foreach (var book in Model)
+        {
+            <li>
+                <h2>@book.Nom</h2>
+                <p>Author: @book.Autheur</p>
+                <p>Price: @book.Prix</p>
+                <p>Content: @book.Contenu</p>
+                <p>Genres: @string.Join(", ", book.Genres.Select(g => g.GenreLitteraire))</p>
+                
+            </li>
+        }
+    </ul>
 </div>
+
 

@@ -35,6 +35,34 @@ namespace ASP.Server.Controllers
         public IEnumerable<Genre> AllGenres { get; init;  }
     }
 
+    public class EditBookModel
+    {
+        [Required]
+        [Display(Name = "Nom")]
+        public String Name { get; set; }
+
+        // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
+        [Required]
+        [Display(Name = "Auteur")]
+        public string Auteur { get; set; }
+
+        [Required]
+        [Display(Name = "Prix")]
+        [Range(0, double.MaxValue, ErrorMessage = "Le prix doit être supérieur ou égal à 0.")]
+        public int Prix { get; set; }
+
+        [Required]
+        [Display(Name = "Contenu")]
+        public string Contenu { get; set; }
+
+        // Liste des genres séléctionné par l'utilisateur
+        public List<int> Genres { get; set; }
+
+        // Liste des genres a afficher à l'utilisateur
+        public IEnumerable<Genre> AllGenres { get; set; }
+        public int Id { get; internal set; }
+    }
+
     public class BookController : Controller
     {
         private readonly LibraryDbContext libraryDbContext;
@@ -89,5 +117,43 @@ namespace ASP.Server.Controllers
             }
             return RedirectToAction(nameof(List));
         }
+
+
+        public ActionResult<EditBookModel> Edit(EditBookModel editBook)
+        {
+            if (ModelState.IsValid)
+            {
+                Book book = libraryDbContext.Books.Include(b => b.Genres).FirstOrDefault(b => b.Id == editBook.Id);
+
+                if (book == null)
+                {
+                    return NotFound();
+                }
+
+                book.Nom = editBook.Name;
+                book.Auteur = editBook.Auteur;
+                book.Prix = editBook.Prix;
+                book.Contenu = editBook.Contenu;
+
+                // Clear current genres and add the selected genres
+                book.Genres.Clear();
+                foreach (int genreId in editBook.Genres)
+                {
+                    Genre genre = libraryDbContext.Genres.Find(genreId);
+                    if (genre != null)
+                    {
+                        book.Genres.Add(genre);
+                    }
+                }
+
+                libraryDbContext.SaveChanges();
+            }
+
+            // Retrieve the list of genres from the database and pass it to the view
+            List<Genre> allGenres = libraryDbContext.Genres.ToList();
+            editBook.AllGenres = allGenres;
+            return View(editBook);
+        }
+
     }
 }

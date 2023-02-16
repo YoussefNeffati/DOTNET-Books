@@ -57,15 +57,15 @@ namespace ASP.Server.Database
                {
                    Id = 2,
                    Nom = "Milky way",
-                   Auteur = "Amine mojito",
+                   Auteur = "Amine",
                    Prix = 56,
-                   Contenu = "Il est lent le lait",
+                   Contenu = "Il est lent",
                    Genres = new List<Genre> { Aventure, Autobiographie }
                },
                B3 = new Book
                {
                    Id = 3,
-                   Nom = "hAWKMAN",
+                   Nom = "Hello World",
                    Auteur = "HASSEN KHALIFA",
                    Prix = 1500,
                    Contenu = "OOOOOHHH .... j'ai le droit de vivre un peu !",

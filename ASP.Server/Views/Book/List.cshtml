@@ -27,6 +27,11 @@
         float: right;
     }
 
+    .book-item__edit-btn {
+        float: right;
+        margin-right: 2%;
+    }
+
 </style>
 
 <div class="container book-list">
@@ -43,6 +48,10 @@
                 <form class="book-item__delete-form" asp-action="DeleteBook" asp-controller="Book">
                     <input type="hidden" name="id" value="@book.Id" />
                     <button type="submit" class="btn btn-danger book-item__delete-btn">Supprimer</button>
+                </form>
+                <form class="book-item__edit-form" asp-action="Edit" asp-controller="Book">
+                    <input type="hidden" name="id" value="@book.Id" />
+                    <button type="submit" class="btn btn-primary book-item__edit-btn">Editer</button>
                 </form>
             </li>
         }

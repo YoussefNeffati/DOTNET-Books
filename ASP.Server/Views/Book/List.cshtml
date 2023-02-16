@@ -4,20 +4,45 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="listeBooks">
-    <h1>Liste des livres:</h1>
-    <ul>
+<style>
+    .book-list {
+        margin: 30px auto;
+        max-width: 800px;
+    }
+
+    .book-item {
+        margin-bottom: 20px;
+    }
+
+    .book-item__title {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .book-item__delete-form {
+        margin-top: 10px;
+    }
+
+    .book-item__delete-btn {
+        float: right;
+    }
+
+</style>
+
+<div class="container book-list">
+    <h1 class="text-center">Liste des livres:</h1>
+    <ul class="list-group">
         @foreach (var book in Model)
         {
-            <li>
-                <h2>@book.Nom</h2>
-                <p>Author: @book.Auteur</p>
-                <p>Price: @book.Prix</p>
-                <p>Content: @book.Contenu</p>
-                <p>Genres: @string.Join(", ", book.Genres.Select(g => g.GenreLitteraire))</p>
-                <form asp-action="DeleteBook" asp-controller="Book">
+            <li class="list-group-item book-item">
+                <h2 class="book-item__title">@book.Nom</h2>
+                <p class="book-item__author">Author: @book.Auteur</p>
+                <p class="book-item__price">Price: @book.Prix€</p>
+                <p class="book-item__content">Content: @book.Contenu</p>
+                <p class="book-item__genres">Genres: @string.Join(", ", book.Genres.Select(g => g.GenreLitteraire))</p>
+                <form class="book-item__delete-form" asp-action="DeleteBook" asp-controller="Book">
                     <input type="hidden" name="id" value="@book.Id" />
-                    <button type="submit">Supprimer</button>
+                    <button type="submit" class="btn btn-danger book-item__delete-btn">Supprimer</button>
                 </form>
             </li>
         }

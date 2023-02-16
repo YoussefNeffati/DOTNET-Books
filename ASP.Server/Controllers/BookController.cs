@@ -16,6 +16,17 @@ namespace ASP.Server.Controllers
         public String Name { get; set; }
 
         // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
+        [Required]
+        [Display(Name = "Auteur")]
+        public string Auteur { get; set; }
+
+        [Required]
+        [Display(Name = "Prix")]
+        public int Prix { get; set; }
+
+        [Required]
+        [Display(Name = "Contenu")]
+        public string Contenu { get; set; }
 
         // Liste des genres séléctionné par l'utilisateur
         public List<int> Genres { get; set; }
@@ -52,6 +63,9 @@ namespace ASP.Server.Controllers
                 Book newBook = new Book
                 {
                     Nom = book.Name,
+                    Prix = book.Prix,
+                    Contenu = book.Contenu,
+                    Auteur= book.Auteur,
                     // Set other properties of the book here
                     Genres = genres.Where(g => book.Genres.Contains(g.Id)).ToList()
 

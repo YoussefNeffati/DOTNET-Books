@@ -4,18 +4,43 @@
 @{
     ViewData["Title"] = "Liste Genre";
 }
+<style>
+    .genre-list {
+        margin: 30px auto;
+        max-width: 800px;
+    }
 
-<div class="listeGenres">
-    <h1>Liste des Genres:</h1>
+    .genre-item {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .genre-item__title {
+        margin-bottom: 10px;
+        font-size: 28px;
+    }
+
+    .genre-item__books {
+        margin-top: 10px;
+    }
+
+</style>
+
+<div class="container genre-list">
+    <h1 class="text-center">Liste des Genres:</h1>
     @foreach (var genre in Model)
     {
-        <h2>@genre.GenreLitteraire</h2>
-        <ul>
-            @foreach (var book in genre.Books)
-            {
-                <li>@book.Nom</li>
-            }
-        </ul>
+        <div class="genre-item">
+            <h2 class="genre-item__title">@genre.GenreLitteraire</h2>
+            <ul class="list-group genre-item__books"> Livres :
+                @foreach (var book in genre.Books)
+                {
+                    <li class="list-group-item genre-item__book">@book.Nom</li>
+                }
+            </ul>
+        </div>
     }
 </div>
 

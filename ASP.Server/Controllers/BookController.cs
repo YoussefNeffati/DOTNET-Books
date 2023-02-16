@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Diagnostics;
 
 namespace ASP.Server.Controllers
 {
@@ -100,6 +101,7 @@ namespace ASP.Server.Controllers
                 };
                 libraryDbContext.Add(newBook);
                 libraryDbContext.SaveChanges();
+                return RedirectToAction(nameof(List));
             }
 
             // Retrieve the list of genres from the database and pass it to the view
@@ -119,16 +121,20 @@ namespace ASP.Server.Controllers
         }
 
 
-        public ActionResult<EditBookModel> Edit(EditBookModel editBook)
+        public ActionResult<EditBookModel> Edit(EditBookModel editBook, int? id)
         {
+
+            
+            Book book = libraryDbContext.Books.Include(b => b.Genres).Single(b => b.Id==(id??editBook.Id));
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+            
             if (ModelState.IsValid)
             {
-                Book book = libraryDbContext.Books.Include(b => b.Genres).FirstOrDefault(b => b.Id == editBook.Id);
-
-                if (book == null)
-                {
-                    return NotFound();
-                }
+            
 
                 book.Nom = editBook.Name;
                 book.Auteur = editBook.Auteur;
@@ -147,12 +153,21 @@ namespace ASP.Server.Controllers
                 }
 
                 libraryDbContext.SaveChanges();
+                return RedirectToAction(nameof(List));
             }
 
-            // Retrieve the list of genres from the database and pass it to the view
-            List<Genre> allGenres = libraryDbContext.Genres.ToList();
-            editBook.AllGenres = allGenres;
-            return View(editBook);
+            EditBookModel editbook2 = new EditBookModel() {
+                Id = book.Id,
+                Name = book.Nom,
+                Auteur = book.Auteur,
+                Prix = book.Prix,
+                Contenu = book.Contenu,
+                Genres = book.Genres.Select(g => g.Id).ToList(),
+                AllGenres = libraryDbContext.Genres.ToList()
+        };
+            
+            
+            return View(editbook2);
         }
 
     }

@@ -1,0 +1,34 @@
+﻿@using ASP.Server.Controllers
+@model CreateGenreModel
+
+@{
+    ViewData["Title"] = "Add a Genre";
+}
+<style>
+    .input-group {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    input, textarea, select {
+        flex-basis: 85%;
+    }
+
+    label {
+        flex-basis: 10%;
+    }
+</style>
+
+<!-- Voici une facon de faire, mais ce n'est pas la seul, a vous de jouer ! -->
+<h1>Add a new genre</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Genre</button>
+</form>

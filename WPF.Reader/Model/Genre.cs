@@ -9,33 +9,5 @@ using Newtonsoft.Json;
 
 namespace WPF.Reader.Model
 {
-   
-
-        // Mettez ici les propriété de votre livre: Nom et Livres associés
-
-        // N'oublier pas qu'un genre peut avoir plusieur livres
     
-    public enum GenresPossible
-    {
-        Roman,
-        Nouvelle,
-        Poesie,
-        Theatre,
-        Essai,
-        Biographie,
-        Autobiographie,
-        Memoire,
-        ScienceFiction,
-        Fantastique,
-        Policier,
-        Horreur,
-        Romance,
-        Aventure,
-        Historique,
-        Epistolaire,
-        Humoristique,
-        Erotique,
-        Jeunesse,
-        TheorieLitteraire
-    }
 }

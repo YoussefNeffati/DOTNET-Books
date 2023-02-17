@@ -22,6 +22,7 @@ namespace WPF.Reader.Pages
     {
         public DetailsBook()
         {
+
             InitializeComponent();
         }
     }

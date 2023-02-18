@@ -21,10 +21,11 @@
 
         <TextBlock Grid.Row="0" Text="{Binding CurrentBook.Nom}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-        <TextBox Grid.Row="1" Text="{Binding CurrentBook.Contenu}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="140,0,140,0" />
+        <TextBlock Grid.Row="1" Text="{Binding CurrentBook.Contenu}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
 
-        <Button Grid.Row="2" Command="{Binding GoBackCommand}" CommandParameter="LIST" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="200" Content="Retourner au details" Margin="0,0,0,27"/>
+        <Button Grid.Row="2" Content="Retour au details" Margin="266,30,266,30" Command="{Binding ReadCommand}" />
+
     </Grid>
 </Page>
 

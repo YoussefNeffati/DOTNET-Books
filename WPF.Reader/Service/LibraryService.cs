@@ -25,7 +25,14 @@ namespace WPF.Reader.Service
 
 
         };
-      
+        public ObservableCollection<Genre> Genres { get; set; } = new ObservableCollection<Genre>()
+        {
+
+
+
+
+        };
+
         public LibraryService()
         {
             
@@ -47,6 +54,17 @@ namespace WPF.Reader.Service
                 Books.Add(book);
             }
         }
-        
+        public void LoadAllGenres()
+        {
+            var genres = new GenreApi().GenreGetGenres();
+          
+            Genres.Clear();
+            // Add the books to the ObservableCollection
+            foreach (Genre genre in genres)
+            {
+                Genres.Add(genre);
+            }
+        }
+
     }
 }

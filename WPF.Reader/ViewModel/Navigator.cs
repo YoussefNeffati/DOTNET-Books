@@ -23,6 +23,22 @@ namespace WPF.Reader.ViewModel
                 service.Frame.GoBack();
             }
         });
+
+        public ICommand GoGenre { get; init; } = new RelayCommand(x =>
+        {
+            var service = Ioc.Default.GetRequiredService<INavigationService>();
+            if (service.Frame.CanGoBack)
+            {
+                service.Frame.RemoveBackEntry();
+                var entry = service.Frame.RemoveBackEntry();
+                while (entry != null)
+                {
+                    entry = service.Frame.RemoveBackEntry();
+                }
+            }
+            service.Navigate<GenresList>();
+        });
+
         public ICommand GoToHome { get; init; } = new RelayCommand(x =>
         {
             var service = Ioc.Default.GetRequiredService<INavigationService>();

@@ -11,6 +11,7 @@ namespace WPF.Reader.ViewModel
         private string _bookContent;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand ReadCommand { get; private set; }
 
         public Book CurrentBook { get; set; }
         public string BookContent
@@ -29,13 +30,13 @@ namespace WPF.Reader.ViewModel
         public ReadBook(Book book)
         {
             CurrentBook = book;
+            ReadCommand = new RelayCommand(x =>
+            {
+                Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(CurrentBook);
+            });
         }
 
-        public ICommand GoBackCommand => new RelayCommand(x =>
-        {
-            var navigationService = Ioc.Default.GetRequiredService<INavigationService>();
-            navigationService.GoBack();
-        });
+        
 
         public void OnPropertyChanged(string propertyName)
         {

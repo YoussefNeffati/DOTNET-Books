@@ -12,10 +12,16 @@ namespace ASP.Server.Model
         [Key]
         public int Id { get; set; }
         public string Nom { get; set; }
-        public string Auteur { get; set; }
         public int Prix { get; set; }
         public string Contenu { get; set; }
-        public List<Genre> Genres { get; set;  }
+
+        // Nouvelle propriété pour la clé étrangère
+        public int AuteurId { get; set; }
+
+        // Propriété de navigation pour la relation avec la classe Auteur
+        public Auteur Auteur { get; set; }
+
+        public List<Genre> Genres { get; set; }
 
 
         public void AjouterGenre(Genre genre)
@@ -41,9 +47,5 @@ namespace ASP.Server.Model
 
 
         }
-
-
-        // Mettez ici les propriété de votre livre: Nom, Autheur, Prix, Contenu et Genres associés
-        // N'oublier pas qu'un livre peut avoir plusieur genres
     }
 }

@@ -19,7 +19,7 @@ namespace ASP.Server.Controllers
         // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
         [Required]
         [Display(Name = "Auteur")]
-        public string Auteur { get; set; }
+        public Auteur Auteur { get; set; }
 
         [Required]
         [Display(Name = "Prix")]
@@ -45,7 +45,7 @@ namespace ASP.Server.Controllers
         // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
         [Required]
         [Display(Name = "Auteur")]
-        public string Auteur { get; set; }
+        public Auteur Auteur { get; set; }
 
         [Required]
         [Display(Name = "Prix")]
@@ -73,10 +73,24 @@ namespace ASP.Server.Controllers
             this.libraryDbContext = libraryDbContext;
         }
 
-        public ActionResult<IEnumerable<Book>> List()
+        public ActionResult<IEnumerable<Book>> List(string authorName, string genreName)
         {
             // Retrieve the list of books from the database
-            List<Book> listBooks = libraryDbContext.Books.Include(b => b.Genres).ToList();
+            List<Book> listBooks = libraryDbContext.Books.Include(b => b.Auteur).Include(b => b.Genres).ToList();
+
+            if (!string.IsNullOrEmpty(authorName))
+            {
+                // Filter the list of books by author name
+                listBooks = listBooks.Where(b => b.Auteur.Nom.Contains(authorName) || b.Auteur.Prenom.Contains(authorName)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(genreName))
+            {
+                // Filter the list of books by genre name
+                listBooks = listBooks.Where(b => b.Genres.Any(g => g.GenreLitteraire.Contains(genreName))).ToList();
+            }
+
+
 
             return View(listBooks);
         }

@@ -36,24 +36,43 @@
 
 <div class="container book-list">
     <h1 class="text-center">Liste des livres:</h1>
-    <ul class="list-group">
-        @foreach (var book in Model)
-        {
-            <li class="list-group-item book-item">
-                <h2 class="book-item__title">@book.Nom</h2>
-                <p class="book-item__author">Author: @book.Auteur</p>
-                <p class="book-item__price">Price: @book.Prix€</p>
-                <p class="book-item__content">Content: @book.Contenu</p>
-                <p class="book-item__genres">Genres: @string.Join(", ", book.Genres.Select(g => g.GenreLitteraire))</p>
-                <form class="book-item__delete-form" asp-action="DeleteBook" asp-controller="Book">
-                    <input type="hidden" name="id" value="@book.Id" />
-                    <button type="submit" class="btn btn-danger book-item__delete-btn">Supprimer</button>
-                </form>
-                <form class="book-item__edit-form" asp-action="Edit" asp-controller="Book">
-                    <input type="hidden" name="id" value="@book.Id" />
-                    <button type="submit" class="btn btn-primary book-item__edit-btn">Editer</button>
-                </form>
-            </li>
-        }
-    </ul>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Filtres</h4>
+            <hr>
+            <form method="get" asp-action="List" asp-controller="Book">
+                <div class="form-group">
+                    <label for="authorName">Auteur</label>
+                    <input type="text" class="form-control" name="authorName" value="@ViewBag.AuthorFilter">
+                </div>
+                <div class="form-group">
+                    <label for="genreName">Genre</label>
+                    <input type="text" class="form-control" name="genreName" value="@ViewBag.GenreFilter">
+                </div>
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <ul class="list-group">
+                @foreach (var book in Model)
+                {
+                    <li class="list-group-item book-item">
+                        <h2 class="book-item__title">@book.Nom</h2>
+                        <p class="book-item__author">Author: @book.Auteur.Prenom @book.Auteur.Nom</p>
+                        <p class="book-item__price">Price: @book.Prix€</p>
+                        <p class="book-item__content">Content: @book.Contenu</p>
+                        <p class="book-item__genres">Genres: @string.Join(", ", book.Genres.Select(g => g.GenreLitteraire))</p>
+                        <form class="book-item__delete-form" asp-action="DeleteBook" asp-controller="Book">
+                            <input type="hidden" name="id" value="@book.Id" />
+                            <button type="submit" class="btn btn-danger book-item__delete-btn">Supprimer</button>
+                        </form>
+                        <form class="book-item__edit-form" asp-action="Edit" asp-controller="Book">
+                            <input type="hidden" name="id" value="@book.Id" />
+                            <button type="submit" class="btn btn-primary book-item__edit-btn">Editer</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
 </div>

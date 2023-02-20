@@ -1,0 +1,31 @@
+﻿@using ASP.Server.Model
+@using ASP.Server.Controllers;
+@model StatsController.Data
+@{
+    ViewData["Title"] = "Stats";
+}
+
+<h1>Stats</h1>
+
+<p>Total books: @Model.TotalBooks</p>
+
+<h2>Books by author:</h2>
+<ul>
+    @foreach (var author in Model.BooksByAuthor)
+    {
+        <li>@author.Author.: @author.Count</li>
+    }
+</ul>
+
+<p>Max words per book: @Model.maxWords</p>
+<p>Min words per book: @Model.minWords</p>
+<p>Median words per book: @Model.medianWords</p>
+<p>Average words per book: @Model.averageWords</p>
+
+<h2>Books by genre:</h2>
+<ul>
+    @foreach (var genre in Model.BooksByGenre)
+    {
+        <li>@genre.Genre: @genre.Count</li>
+    }
+</ul>

@@ -28,8 +28,6 @@ namespace WPF.Reader.ViewModel
         private SpeechSynthesizer _synthesizer;
         private PromptBuilder _promptBuilder;
         private bool _isPaused;
-        private int _selectionStart;
-        private int _selectionLength;
 
         public Book CurrentBook { get; set; }
         public string BookContent
@@ -45,12 +43,11 @@ namespace WPF.Reader.ViewModel
             }
         }
 
-        private string lastSelectedText;
 
         public ReadBook(Book book)
         {
             CurrentBook = book;
-
+            
             // Initialize the SpeechSynthesizer and PromptBuilder
             _synthesizer = new SpeechSynthesizer();
             _promptBuilder = new PromptBuilder();

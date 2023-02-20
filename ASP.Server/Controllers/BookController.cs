@@ -102,13 +102,17 @@ namespace ASP.Server.Controllers
                 // Retrieve the list of genres from the database
                 List<Genre> genres = libraryDbContext.Genres.ToList();
 
+                // Create a new Auteur object with the name from the form
+                Auteur newAuteur = new Auteur { Nom = book.Auteur.Nom, Prenom = book.Auteur.Prenom, Nationalite = book.Auteur.Nationalite, Books = { } };
+                libraryDbContext.Add(newAuteur);
+
                 // Create a new book and add it to the database
                 Book newBook = new Book
                 {
                     Nom = book.Name,
                     Prix = book.Prix,
                     Contenu = book.Contenu,
-                    Auteur= book.Auteur,
+                    Auteur = newAuteur,
                     // Set other properties of the book here
                     Genres = genres.Where(g => book.Genres.Contains(g.Id)).ToList()
 
@@ -137,21 +141,26 @@ namespace ASP.Server.Controllers
 
         public ActionResult<EditBookModel> Edit(EditBookModel editBook, int? id)
         {
-
-            
-            Book book = libraryDbContext.Books.Include(b => b.Genres).Single(b => b.Id==(id??editBook.Id));
+            Book book = libraryDbContext.Books.Include(b => b.Auteur).Include(b => b.Genres).Single(b => b.Id == (id ?? editBook.Id));
 
             if (book == null)
             {
                 return NotFound();
             }
-            
+
             if (ModelState.IsValid)
             {
-            
-
                 book.Nom = editBook.Name;
-                book.Auteur = editBook.Auteur;
+
+                // Create a new Auteur object with the updated values
+                Auteur updatedAuteur = new Auteur
+                {
+                    Nom = editBook.Auteur.Nom,
+                    Prenom = editBook.Auteur.Prenom,
+                    Nationalite = editBook.Auteur.Nationalite
+                };
+
+                book.Auteur = updatedAuteur;
                 book.Prix = editBook.Prix;
                 book.Contenu = editBook.Contenu;
 
@@ -170,17 +179,17 @@ namespace ASP.Server.Controllers
                 return RedirectToAction(nameof(List));
             }
 
-            EditBookModel editbook2 = new EditBookModel() {
+            EditBookModel editbook2 = new EditBookModel()
+            {
                 Id = book.Id,
                 Name = book.Nom,
-                Auteur = book.Auteur,
                 Prix = book.Prix,
                 Contenu = book.Contenu,
+                Auteur = book.Auteur,
                 Genres = book.Genres.Select(g => g.Id).ToList(),
                 AllGenres = libraryDbContext.Genres.ToList()
-        };
-            
-            
+            };
+
             return View(editbook2);
         }
 

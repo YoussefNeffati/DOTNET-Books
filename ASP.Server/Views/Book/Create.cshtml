@@ -32,9 +32,21 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Auteur">Auteur:</label>
-        <input asp-for="Auteur" class="form-control" />
-        <span asp-validation-for="Auteur" class="text-danger"></span>
+        <label asp-for="Auteur.Nom">Nom de l'auteur':</label>
+        <input asp-for="Auteur.Nom" class="form-control" />
+        <span asp-validation-for="Auteur.Nom" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Auteur.Prenom">Prenom de l'auteur:</label>
+        <input asp-for="Auteur.Prenom" class="form-control" />
+        <span asp-validation-for="Auteur.Prenom" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Auteur.Nationalite">Nationalité de l'auteur:</label>
+        <input asp-for="Auteur.Nationalite" class="form-control" />
+        <span asp-validation-for="Auteur.Nationalite" class="text-danger"></span>
     </div>
 
     <div class="form-group">

@@ -4,28 +4,75 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WPF.Reader.Pages"
-      xmlns:vm="clr-namespace:WPF.Reader.ViewModel"
+      xmlns:vm="clr-namespace:WPF.Reader.ViewModel" xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:u="clr-namespace:WPF.Reader.Utils"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       d:DataContext="{d:DesignInstance Type=vm:InDesignReadBook, d:IsDesignTimeCreatable=True}"
       Title="ReadBook">
     <Page.Resources>
         <vm:Navigator x:Key="navigator" />
+        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <Style x:Key="TextBoxStyle1" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
     </Page.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="80" />
-        </Grid.RowDefinitions>
+    <DockPanel>
 
-        <TextBlock Grid.Row="0" Text="{Binding CurrentBook.Nom}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <TextBlock DockPanel.Dock="Top" Text="{Binding CurrentBook.Nom}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <Button Content="Retour au details" Width="100" Margin="10" Command="{Binding ReadCommand}" />
+            <Button  Content="Play" Width="100" Margin="10" Command="{Binding PlayCommand}" />
+            <Button Content="Stop" Width="100" Margin="10" Command="{Binding StopCommand}" />
+            <Button  Content="Pause" Width="100" Margin="10" Command="{Binding PauseCommand}" />
+            <Button  Content="Reprendre" Width="100" Margin="10" Command="{Binding ResumeCommand}" />
+            <Button Content="Read Selected" Width="100" Margin="10" Command="{Binding ReadSelectedCommand}" />
+        </StackPanel>
 
-        <TextBlock Grid.Row="1" Text="{Binding CurrentBook.Contenu}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="textBox" Text="{Binding CurrentBook.Contenu, Mode=TwoWay}" FontSize="20" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" u:TextBoxHelper.SelectedText="{Binding SelectedText}" IsReadOnly="True" >
+        </TextBox>
 
+    </DockPanel>
 
-        <Button Grid.Row="2" Content="Retour au details" Margin="266,30,266,30" Command="{Binding ReadCommand}" />
-
-    </Grid>
 </Page>
 

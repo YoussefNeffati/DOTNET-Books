@@ -19,6 +19,9 @@
     label {
         flex-basis: 10%;
     }
+    .hidden {
+        display: none;
+    }
 </style>
 
 <!-- Voici une facon de faire, mais ce n'est pas la seul, a vous de jouer ! -->
@@ -32,18 +35,27 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Auteur.Nom">Nom de l'auteur':</label>
+        <label asp-for="Auteur">Auteur:</label>
+        <select asp-for="Auteur.Id" asp-items="@(new SelectList(Model.AllAuteurs, "Id", "Nom"))" class="form-control" id="auteur-select">
+                <option value="0">-- Selectionner un auteur  -- Renseignez les informations de l'auteur ci-dessous si l'auteur n'existe pas'</option>
+            </select>
+            <span asp-validation-for="Auteur.Id" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group auteur-fields hidden">
+        <label asp-for="Auteur.Nom">Nom de l'auteur:</label>
         <input asp-for="Auteur.Nom" class="form-control" />
         <span asp-validation-for="Auteur.Nom" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group auteur-fields hidden">
         <label asp-for="Auteur.Prenom">Prenom de l'auteur:</label>
         <input asp-for="Auteur.Prenom" class="form-control" />
         <span asp-validation-for="Auteur.Prenom" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group auteur-fields hidden">
         <label asp-for="Auteur.Nationalite">Nationalité de l'auteur:</label>
         <input asp-for="Auteur.Nationalite" class="form-control" />
         <span asp-validation-for="Auteur.Nationalite" class="text-danger"></span>
@@ -70,3 +82,38 @@
 
     <button type="submit" class="btn btn-primary">Add Book</button>
 </form>
+
+<script>
+    const auteurSelect = document.querySelector('#auteur-select');
+    const auteurFields = document.querySelectorAll('.auteur-fields');
+
+    function checkAuteurSelected() {
+        if (auteurSelect.value === '0') {
+            auteurFields.forEach(field => {
+                field.classList.remove('hidden');
+            });
+        } else {
+            auteurFields.forEach(field => {
+                field.classList.add('hidden');
+            });
+        }
+    }
+
+    auteurSelect.addEventListener('change', () => {
+        if (auteurSelect.value === '0') {
+            auteurFields.forEach(field => {
+                field.classList.remove('hidden');
+            });
+        } else {
+            auteurFields.forEach(field => {
+                field.classList.add('hidden');
+            });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        checkAuteurSelected();
+    });
+
+
+</script>

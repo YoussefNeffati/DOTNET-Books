@@ -17,7 +17,7 @@ namespace ASP.Server.Controllers
         public String Name { get; set; }
 
         // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
-        [Required]
+        //[Required]
         [Display(Name = "Auteur")]
         public Auteur Auteur { get; set; }
 
@@ -34,6 +34,9 @@ namespace ASP.Server.Controllers
 
         // Liste des genres a afficher à l'utilisateur
         public IEnumerable<Genre> AllGenres { get; init;  }
+
+        public List<Auteur> AllAuteurs { get; set; }
+
     }
 
     public class EditBookModel
@@ -59,9 +62,15 @@ namespace ASP.Server.Controllers
         // Liste des genres séléctionné par l'utilisateur
         public List<int> Genres { get; set; }
 
+        public List<Auteur> AllAuteurs { get; set; }
+
         // Liste des genres a afficher à l'utilisateur
         public IEnumerable<Genre> AllGenres { get; set; }
         public int Id { get; internal set; }
+
+
+        public int SelectedAuthorId { get; set; }
+
     }
 
     public class BookController : Controller
@@ -102,9 +111,17 @@ namespace ASP.Server.Controllers
                 // Retrieve the list of genres from the database
                 List<Genre> genres = libraryDbContext.Genres.ToList();
 
-                // Create a new Auteur object with the name from the form
-                Auteur newAuteur = new Auteur { Nom = book.Auteur.Nom, Prenom = book.Auteur.Prenom, Nationalite = book.Auteur.Nationalite, Books = { } };
-                libraryDbContext.Add(newAuteur);
+                // Retrieve the selected author from the database or create a new one
+                Auteur newAuteur;
+                if (book.Auteur.Id != 0)
+                {
+                    newAuteur = libraryDbContext.Auteurs.Find(book.Auteur.Id);
+                }
+                else
+                {
+                    newAuteur = new Auteur { Nom = book.Auteur.Nom, Prenom = book.Auteur.Prenom, Nationalite = book.Auteur.Nationalite, Books = { } };
+                    libraryDbContext.Add(newAuteur);
+                }
 
                 // Create a new book and add it to the database
                 Book newBook = new Book
@@ -115,16 +132,17 @@ namespace ASP.Server.Controllers
                     Auteur = newAuteur,
                     // Set other properties of the book here
                     Genres = genres.Where(g => book.Genres.Contains(g.Id)).ToList()
-
                 };
                 libraryDbContext.Add(newBook);
                 libraryDbContext.SaveChanges();
                 return RedirectToAction(nameof(List));
             }
 
-            // Retrieve the list of genres from the database and pass it to the view
+            // Retrieve the list of genres and authors from the database and pass it to the view
             List<Genre> allGenres = libraryDbContext.Genres.ToList();
-            return View(new CreateBookModel { AllGenres = allGenres });
+            List<Auteur> allAuteurs = libraryDbContext.Auteurs.ToList();
+
+            return View(new CreateBookModel { AllGenres = allGenres, AllAuteurs = allAuteurs });
         }
 
         public ActionResult DeleteBook(int id)
@@ -152,15 +170,30 @@ namespace ASP.Server.Controllers
             {
                 book.Nom = editBook.Name;
 
-                // Create a new Auteur object with the updated values
-                Auteur updatedAuteur = new Auteur
-                {
-                    Nom = editBook.Auteur.Nom,
-                    Prenom = editBook.Auteur.Prenom,
-                    Nationalite = editBook.Auteur.Nationalite
-                };
 
-                book.Auteur = updatedAuteur;
+                if (editBook.Auteur.Id != 0)
+                {
+                    // Use the selected author
+                    Auteur selectedAuteur = libraryDbContext.Auteurs.Find(editBook.Auteur.Id);
+            
+                    book.Auteur = selectedAuteur;
+                    
+                }
+                else
+                {
+                    // Create a new Auteur object with the updated values
+                    Auteur updatedAuteur = new Auteur
+                    {
+                        Nom = editBook.Auteur.Nom,
+                        Prenom = editBook.Auteur.Prenom,
+                        Nationalite = editBook.Auteur.Nationalite
+                    };
+
+                    book.Auteur = updatedAuteur;
+                    libraryDbContext.Add(updatedAuteur);
+
+                }
+
                 book.Prix = editBook.Prix;
                 book.Contenu = editBook.Contenu;
 
@@ -186,8 +219,10 @@ namespace ASP.Server.Controllers
                 Prix = book.Prix,
                 Contenu = book.Contenu,
                 Auteur = book.Auteur,
+                SelectedAuthorId = book.Auteur.Id,
                 Genres = book.Genres.Select(g => g.Id).ToList(),
-                AllGenres = libraryDbContext.Genres.ToList()
+                AllGenres = libraryDbContext.Genres.ToList(),
+                AllAuteurs = libraryDbContext.Auteurs.ToList()
             };
 
             return View(editbook2);

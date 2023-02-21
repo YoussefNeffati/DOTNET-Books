@@ -87,7 +87,7 @@ namespace ASP.Server.Controllers
 
             // Calculer le nombre de livres par auteur
             var booksByAuthor = _context.Books.GroupBy(b => b.Auteur)
-                                          .Select(g =>  new BooksByAuthor  { Author = g.Key, Count = g.Count() });
+                                          .Select(g =>  new BooksByAuthor  { Author = g.Key.Nom, Count = g.Count() });
 
             // Calculer le nombre maximum, minimum, median et moyen de mots d'un livre
             var wordCounts = _context.Books.ToList().Select(b => b.Contenu.Split(' ').Count());
